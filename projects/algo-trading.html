@@ -1,0 +1,2157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Algo Trading and Beyond</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script src="deck-stage.js"></script>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        /* --bg: #dbd5c9; */
+        --bg: #f3ead8;
+        --surface: #f3f1ed;
+        --surface2: #edf0f7;
+        --border: #040505;
+        --text: #111827;
+        --muted: #566578;
+        --gold: #9a6e08;
+        --gold-light: #b38010;
+        --blue: #2465c8;
+        --blue-light: #1a50a8;
+        --green: #16804a;
+        --green-light: #138040;
+        --red: #c03030;
+        --font: "DM Sans", sans-serif;
+        --mono: "DM Mono", monospace;
+      }
+
+      deck-stage {
+        --deck-bg: var(--bg);
+      }
+
+      section {
+        background: var(--bg);
+        font-family: var(--font);
+        color: var(--text);
+        overflow: hidden;
+      }
+
+      /* ─── SLIDE 1: Landscape ─── */
+      .s1-wrap {
+        display: flex;
+        flex-direction: column;
+        width: 1920px;
+        height: 1080px;
+        padding: 48px 80px 40px;
+        gap: 24px;
+      }
+
+      .s1-header {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .eyebrow {
+        font-size: 24px;
+        font-weight: 500;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--gold);
+        font-family: var(--mono);
+      }
+
+      .s1-title {
+        font-size: 62px;
+        font-weight: 700;
+        color: var(--text);
+        line-height: 1.05;
+        letter-spacing: -0.02em;
+      }
+
+      .s1-subtitle {
+        font-size: 24px;
+        font-weight: 300;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+
+      /* subgrid: 4 cols × 5 rows — header, desc, features, insight, examples */
+      .s1-cols {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: auto auto auto 1fr auto;
+        gap: 0 20px;
+        flex: 1;
+        min-height: 0;
+      }
+
+      .bucket-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 24px 24px 20px;
+        display: grid;
+        grid-row: span 5;
+        grid-template-rows: subgrid;
+        row-gap: 14px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .bucket-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+      }
+      .card-latency::before {
+        background: #16804a;
+      }
+      .card-alpha::before {
+        background: var(--gold);
+      }
+      .card-exec::before {
+        background: #c07020;
+      }
+      .card-retail::before {
+        background: #c03030;
+      }
+
+      .card-header {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .bucket-num {
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        font-family: var(--mono);
+      }
+      .card-latency .bucket-num {
+        color: #16804a;
+      }
+      .card-alpha .bucket-num {
+        color: var(--gold-light);
+      }
+      .card-exec .bucket-num {
+        color: #c07020;
+      }
+      .card-retail .bucket-num {
+        color: #c03030;
+      }
+
+      .bucket-name {
+        font-size: 30px;
+        font-weight: 700;
+        line-height: 1.1;
+      }
+      .card-latency .bucket-name {
+        color: #16804a;
+      }
+      .card-alpha .bucket-name {
+        color: var(--gold-light);
+      }
+      .card-exec .bucket-name {
+        color: #c07020;
+      }
+      .card-retail .bucket-name {
+        color: #c03030;
+      }
+
+      .edge-tag {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        margin-top: 2px;
+      }
+      .edge-bullet {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 18px;
+        font-weight: 600;
+        font-family: var(--mono);
+      }
+      .edge-bullet::before {
+        content: "";
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      .card-latency .edge-bullet {
+        color: #16804a;
+      }
+      .card-alpha .edge-bullet {
+        color: var(--gold-light);
+      }
+      .card-exec .edge-bullet {
+        color: #c07020;
+      }
+      .card-retail .edge-bullet {
+        color: #c03030;
+      }
+      .card-latency .edge-bullet::before {
+        background: #16804a;
+      }
+      .card-alpha .edge-bullet::before {
+        background: var(--gold-light);
+      }
+      .card-exec .edge-bullet::before {
+        background: #c07020;
+      }
+      .card-retail .edge-bullet::before {
+        background: #c03030;
+      }
+
+      .bucket-desc {
+        font-size: 22px;
+        font-weight: 400;
+        color: var(--muted);
+        line-height: 1.45;
+      }
+
+      .bucket-features {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .bucket-insight {
+        align-self: stretch;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 10px;
+        padding: 14px 14px 12px;
+        border-radius: 8px;
+        border-left: 3px solid;
+        position: relative;
+      }
+      .card-latency .bucket-insight {
+        background: rgba(22, 128, 74, 0.07);
+        border-left-color: #16804a;
+      }
+      .card-alpha .bucket-insight {
+        background: rgba(155, 110, 8, 0.07);
+        border-left-color: var(--gold);
+      }
+      .card-exec .bucket-insight {
+        background: rgba(192, 112, 32, 0.07);
+        border-left-color: #c07020;
+      }
+      .card-retail .bucket-insight {
+        background: rgba(192, 48, 48, 0.07);
+        border-left-color: #c03030;
+      }
+
+      .insight-quote {
+        font-size: 19px;
+        font-weight: 500;
+        color: var(--text);
+        line-height: 1.4;
+        font-style: italic;
+      }
+      .insight-quote::before {
+        content: "“";
+        color: var(--muted);
+        font-size: 24px;
+        line-height: 0;
+        vertical-align: -4px;
+        margin-right: 2px;
+      }
+      .insight-quote::after {
+        content: "”";
+        color: var(--muted);
+        font-size: 24px;
+        line-height: 0;
+        vertical-align: -4px;
+        margin-left: 2px;
+      }
+
+      .insight-tag {
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        font-family: var(--mono);
+        color: var(--muted);
+      }
+      .card-latency .insight-tag {
+        color: #16804a;
+      }
+      .card-alpha .insight-tag {
+        color: var(--gold-light);
+      }
+      .card-exec .insight-tag {
+        color: #c07020;
+      }
+      .card-retail .insight-tag {
+        color: #c03030;
+      }
+
+      .feat-item {
+        font-size: 20px;
+        font-weight: 600;
+        color: #566578;
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        line-height: 1.3;
+      }
+      .feat-item::before {
+        content: "—";
+        font-family: var(--mono);
+        font-size: 16px;
+        margin-top: 2px;
+        flex-shrink: 0;
+        color: #566578;
+      }
+
+      .bucket-examples {
+        border-top: 1px solid var(--border);
+        padding-top: 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .ex-label {
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--muted);
+        font-family: var(--mono);
+      }
+      .ex-names {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .ex-chip {
+        font-size: 18px;
+        font-weight: 500;
+        padding: 4px 10px;
+        border-radius: 4px;
+        background: var(--surface2);
+        color: var(--text);
+        border: 1px solid var(--border);
+      }
+
+      .insight-source {
+        font-size: 12px;
+        font-weight: 500;
+        font-family: var(--mono);
+        color: var(--muted);
+        opacity: 0.75;
+        margin-top: 2px;
+        letter-spacing: 0.04em;
+      }
+
+      .s1-footer {
+        font-size: 20px;
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .s1-footer::before {
+        content: "";
+        display: block;
+        width: 28px;
+        height: 1px;
+        background: var(--border);
+      }
+
+      /* ─── SLIDE 1b: Retail Ecosystem Image ─── */
+      .s1b-wrap {
+        width: 1920px;
+        height: 1080px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #ffffff;
+        overflow: hidden;
+      }
+
+      .s1b-wrap img {
+        width: 1920px;
+        height: 1080px;
+        object-fit: contain;
+        display: block;
+      }
+
+      /* ─── SLIDE 2: Investor Journey ─── */
+      .s2-wrap {
+        display: flex;
+        flex-direction: column;
+        width: 1920px;
+        height: 1080px;
+        padding: 48px 80px 40px;
+        gap: 24px;
+      }
+
+      .s2-stage-row {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 16px;
+      }
+
+      .stage-col {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+
+      .stage-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 10px;
+        padding-bottom: 20px;
+        position: relative;
+      }
+
+      /* Connector arrow between stage headers */
+      .stage-col:not(:last-child) .stage-header::after {
+        content: "→";
+        position: absolute;
+        right: -14px;
+        top: 24px;
+        font-size: 22px;
+        color: var(--border);
+        z-index: 2;
+      }
+
+      .stage-num {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        font-weight: 700;
+        font-family: var(--mono);
+        flex-shrink: 0;
+      }
+
+      .stage-title {
+        font-size: 24px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        line-height: 1.2;
+        color: var(--text);
+      }
+
+      .stage-desc {
+        font-size: 24px;
+        font-weight: 400;
+        color: var(--muted);
+        line-height: 1.35;
+      }
+
+      /* Stage color themes */
+      .st-1 .stage-num {
+        background: rgba(74, 143, 232, 0.2);
+        color: var(--blue-light);
+      }
+      .st-2 .stage-num {
+        background: rgba(212, 168, 67, 0.2);
+        color: var(--gold-light);
+      }
+      .st-3 .stage-num {
+        background: rgba(106, 61, 181, 0.12);
+        color: #6a3db5;
+      }
+      .st-4 .stage-num {
+        background: rgba(192, 48, 48, 0.12);
+        color: #c03030;
+      }
+      .st-5 .stage-num {
+        background: rgba(22, 128, 74, 0.12);
+        color: var(--green-light);
+      }
+      .st-6 .stage-num {
+        background: rgba(21, 112, 160, 0.12);
+        color: #1570a0;
+      }
+
+      .st-1 .stage-title {
+        color: var(--blue-light);
+      }
+      .st-2 .stage-title {
+        color: var(--gold-light);
+      }
+      .st-3 .stage-title {
+        color: #6a3db5;
+      }
+      .st-4 .stage-title {
+        color: #c03030;
+      }
+      .st-5 .stage-title {
+        color: var(--green-light);
+      }
+      .st-6 .stage-title {
+        color: #1570a0;
+      }
+
+      .platform-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 20px 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        flex: 1;
+      }
+
+      .platform-name {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--text);
+      }
+
+      .platform-sub {
+        font-size: 24px;
+        font-weight: 500;
+        color: var(--gold);
+        font-family: var(--mono);
+        letter-spacing: 0.05em;
+      }
+
+      .platform-desc {
+        font-size: 24px;
+        color: var(--muted);
+        line-height: 1.4;
+      }
+
+      .ai-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 24px;
+        font-weight: 600;
+        padding: 3px 8px;
+        border-radius: 4px;
+        background: rgba(212, 168, 67, 0.12);
+        color: var(--gold-light);
+        border: 1px solid rgba(212, 168, 67, 0.25);
+        font-family: var(--mono);
+        width: fit-content;
+      }
+
+      .s2-takeaway {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-left: 3px solid var(--gold);
+        border-radius: 8px;
+        padding: 20px 28px;
+        font-size: 24px;
+        color: var(--text);
+        line-height: 1.4;
+        font-weight: 400;
+      }
+
+      .s2-takeaway strong {
+        color: var(--gold-light);
+        font-weight: 600;
+      }
+
+      /* ─── SLIDE 3: MCP Defined ─── */
+      .s3d-wrap {
+        display: grid;
+        grid-template-columns: 400px 1fr 360px;
+        grid-template-rows: auto 1fr;
+        width: 1920px;
+        height: 1080px;
+        padding: 52px 72px 48px;
+        column-gap: 48px;
+        row-gap: 28px;
+        overflow: hidden;
+      }
+      .s3d-header {
+        grid-column: 1/-1;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid var(--border);
+      }
+      .mcp-def-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        padding-right: 40px;
+        border-right: 1px solid var(--border);
+        min-height: 0;
+        overflow: hidden;
+      }
+      .mcp-def-label {
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--gold);
+        font-family: var(--mono);
+      }
+      .mcp-def-title {
+        font-size: 34px;
+        font-weight: 700;
+        color: var(--text);
+        line-height: 1.15;
+      }
+      .mcp-def-body {
+        font-size: 24px;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+      .mcp-analogy {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-left: 3px solid var(--gold);
+        border-radius: 8px;
+        padding: 14px 18px;
+        font-size: 22px;
+        color: #7a5a08;
+        line-height: 1.4;
+        font-style: italic;
+      }
+      .mcp-pillars {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: auto;
+      }
+      .mcp-pillar {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 22px;
+        color: var(--text);
+      }
+      .mcp-pillar-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--gold);
+        flex-shrink: 0;
+      }
+      .journey-impact-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 0 16px;
+        min-height: 0;
+        overflow: hidden;
+      }
+      .ji-title {
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+        font-family: var(--mono);
+      }
+      .ji-stages {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 10px;
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
+      }
+      .ji-stage {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        position: relative;
+        flex: 1;
+      }
+      .ji-stage:not(:last-child)::after {
+        content: "→";
+        position: absolute;
+        right: -8px;
+        top: 16px;
+        font-size: 16px;
+        color: var(--border);
+      }
+      .ji-num {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 700;
+        font-family: var(--mono);
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        color: var(--muted);
+        flex-shrink: 0;
+      }
+      .ji-name {
+        font-size: 15px;
+        font-weight: 600;
+        text-align: center;
+        color: var(--text);
+        line-height: 1.25;
+      }
+      .ji-impact {
+        width: 100%;
+        border-radius: 8px;
+        padding: 14px 10px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        flex: 1;
+      }
+      .ji-impact-high {
+        background: rgba(61, 170, 110, 0.1);
+        border: 1px solid rgba(61, 170, 110, 0.3);
+        color: var(--green-light);
+      }
+      .ji-impact-med {
+        background: rgba(212, 168, 67, 0.1);
+        border: 1px dashed rgba(212, 168, 67, 0.35);
+        color: var(--gold-light);
+      }
+      .ji-impact-low {
+        background: rgba(224, 85, 85, 0.08);
+        border: 1px dashed rgba(224, 85, 85, 0.3);
+        color: #c03030;
+      }
+      .ji-impact-label {
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        font-family: var(--mono);
+      }
+      .ji-impact-desc {
+        font-size: 15px;
+        font-weight: 400;
+        color: inherit;
+        opacity: 0.85;
+        line-height: 1.35;
+        font-family: var(--font);
+      }
+      .bvp-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding-left: 40px;
+        border-left: 1px solid var(--border);
+        min-height: 0;
+        overflow: hidden;
+      }
+      .bvp-source {
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--blue-light);
+        font-family: var(--mono);
+      }
+      .bvp-quote-mark {
+        font-size: 64px;
+        line-height: 0.7;
+        color: var(--border);
+        font-family: Georgia, serif;
+      }
+      .bvp-quote-text {
+        font-size: 19px;
+        color: var(--text);
+        line-height: 1.55;
+        font-weight: 400;
+        font-style: italic;
+      }
+      .bvp-quote-text em {
+        color: var(--gold-light);
+        font-style: normal;
+        font-weight: 600;
+      }
+      .bvp-attribution {
+        font-size: 17px;
+        color: var(--muted);
+        font-family: var(--mono);
+      }
+      .bvp-insight {
+        margin-top: auto;
+        background: rgba(74, 143, 232, 0.07);
+        border: 1px solid rgba(74, 143, 232, 0.2);
+        border-radius: 8px;
+        padding: 14px 18px;
+        font-size: 20px;
+        color: var(--blue-light);
+        line-height: 1.45;
+      }
+      .bvp-insight strong {
+        color: var(--blue-light);
+        font-weight: 600;
+      }
+
+      /* ─── SLIDE 4: MCP Opportunity ─── */
+      .s3-wrap {
+        display: flex;
+        flex-direction: column;
+        width: 1920px;
+        height: 1080px;
+        padding: 48px 80px 40px;
+        gap: 24px;
+      }
+
+      .s3-cols {
+        display: grid;
+        grid-template-columns: 1fr 60px 1fr;
+        gap: 0;
+        flex: 1;
+        align-items: stretch;
+      }
+
+      .s3-path {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .path-label {
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        font-family: var(--mono);
+        padding: 8px 14px;
+        border-radius: 6px;
+        width: fit-content;
+      }
+
+      .path-1 .path-label {
+        background: rgba(74, 143, 232, 0.15);
+        color: var(--blue-light);
+      }
+      .path-2 .path-label {
+        background: rgba(61, 170, 110, 0.15);
+        color: var(--green-light);
+      }
+
+      .path-title {
+        font-size: 34px;
+        font-weight: 700;
+        color: var(--text);
+        line-height: 1.2;
+      }
+
+      .path-desc {
+        font-size: 24px;
+        font-weight: 400;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .mcp-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        flex: 1;
+      }
+
+      .mcp-layer {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 14px 18px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .mcp-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        flex-shrink: 0;
+      }
+
+      .mcp-icon-blue {
+        background: rgba(74, 143, 232, 0.15);
+      }
+      .mcp-icon-gold {
+        background: rgba(212, 168, 67, 0.15);
+      }
+      .mcp-icon-green {
+        background: rgba(61, 170, 110, 0.15);
+      }
+
+      .mcp-content {
+      }
+      .mcp-name {
+        font-size: 24px;
+        font-weight: 600;
+        color: var(--text);
+      }
+      .mcp-detail {
+        font-size: 24px;
+        color: var(--muted);
+        margin-top: 3px;
+      }
+
+      .broker-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .broker-chip {
+        font-size: 24px;
+        font-weight: 500;
+        padding: 6px 14px;
+        border-radius: 6px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        color: var(--text);
+      }
+
+      .s3-divider {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .or-badge {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: var(--surface2);
+        border: 2px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--muted);
+        font-family: var(--mono);
+      }
+
+      .s3-divider-line {
+        flex: 1;
+        width: 1px;
+        background: var(--border);
+      }
+
+      .platform-trio {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        flex: 1;
+      }
+
+      .trio-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .trio-name {
+        font-size: 26px;
+        font-weight: 700;
+        color: var(--text);
+      }
+
+      .trio-tag {
+        font-size: 24px;
+        font-weight: 600;
+        padding: 3px 8px;
+        border-radius: 4px;
+        background: rgba(61, 170, 110, 0.12);
+        color: var(--green-light);
+        border: 1px solid rgba(61, 170, 110, 0.2);
+        font-family: var(--mono);
+        width: fit-content;
+      }
+
+      .trio-props {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        flex: 1;
+      }
+
+      .trio-prop {
+        font-size: 24px;
+        color: var(--muted);
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        line-height: 1.35;
+      }
+
+      .trio-prop::before {
+        content: "·";
+        color: var(--green-light);
+        font-size: 20px;
+        flex-shrink: 0;
+        margin-top: -1px;
+      }
+
+      .trio-vp {
+        font-size: 24px;
+        font-weight: 500;
+        color: var(--text);
+        padding-top: 12px;
+        border-top: 1px solid var(--border);
+        line-height: 1.4;
+      }
+
+      .s3-footer {
+        background: linear-gradient(
+          90deg,
+          rgba(74, 143, 232, 0.08),
+          rgba(61, 170, 110, 0.08)
+        );
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 16px 28px;
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        font-size: 20px;
+        color: var(--muted);
+      }
+
+      .s3-footer-caps {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      .cap-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 24px;
+        color: var(--muted);
+      }
+
+      .cap-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--border);
+        flex-shrink: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <deck-stage width="1920" height="1080">
+      <!-- ════ SLIDE 1: Algo Trading Landscape ════ -->
+      <section data-label="01 Landscape">
+        <div class="s1-wrap">
+          <div class="s1-header">
+            <div class="eyebrow">The Algo Trading Landscape</div>
+            <div class="s1-title">Four Broad Buckets. One Ecosystem.</div>
+            <div class="s1-subtitle">
+              How participants are placed — and where they sit in order of least
+              to most vulnerable to AI disruption!
+            </div>
+          </div>
+
+          <div class="s1-cols">
+            <!-- Latency Edge -->
+            <div class="bucket-card card-latency">
+              <div class="card-header">
+                <div class="bucket-num">01· HFT &amp; MARKET MAKING</div>
+                <div class="bucket-name">Latency Edge</div>
+                <div class="edge-tag">
+                  <div class="edge-bullet">Speed</div>
+                  <div class="edge-bullet">Microstructure</div>
+                  <div class="edge-bullet">Scale</div>
+                </div>
+              </div>
+              <div class="bucket-desc">
+                Win by being fastest. Highly niche &amp; differentiated. Exploit
+                minor price dislocations in markets
+              </div>
+              <div class="bucket-features">
+                <div class="feat-item">Ultra-low latency infrastructure</div>
+                <div class="feat-item">Market making & liquidity provision</div>
+              </div>
+              <div class="bucket-insight">
+                <div class="insight-tag">AI Impact · Minimal</div>
+                <div class="insight-source">— Batchmate @Quadeye</div>
+                <div class="insight-quote">
+                  We use LLMs to ship code faster, but our core IP — GPU
+                  performance and proprietary market-making algos — is
+                  untouched. Workforce, largely unaffected.
+                </div>
+              </div>
+              <div class="bucket-examples">
+                <div class="ex-label">Players</div>
+                <div class="ex-names">
+                  <div class="ex-chip">Citadel Securities</div>
+                  <div class="ex-chip">Jane Street</div>
+                  <div class="ex-chip">Graviton</div>
+                  <div class="ex-chip">Quadeye</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Alpha Edge -->
+            <div class="bucket-card card-alpha">
+              <div class="card-header">
+                <div class="bucket-num">02· SYSTEMATIC TRADING</div>
+                <div class="bucket-name">Alpha Edge</div>
+                <div class="edge-tag">
+                  <div class="edge-bullet">Data</div>
+                  <div class="edge-bullet">Models</div>
+                  <div class="edge-bullet">Insight</div>
+                </div>
+              </div>
+              <div class="bucket-desc">
+                Win by generating alpha over the market through data, models,
+                and systematic research.
+              </div>
+              <div class="bucket-features">
+                <div class="feat-item">Data & model-driven strategies</div>
+                <div class="feat-item">Alternative & proprietary datasets</div>
+              </div>
+              <div class="bucket-insight">
+                <div class="insight-tag">AI Impact · Low</div>
+                <div class="insight-source">— Senior @Trexquant</div>
+                <div class="insight-quote">
+                  Our edge is asymmetric data and ML well beyond the STEM math
+                  frontier LLMs are trained on. Little to no impact — for now.
+                </div>
+              </div>
+              <div class="bucket-examples">
+                <div class="ex-label">Players</div>
+                <div class="ex-names">
+                  <div class="ex-chip">Renaissance</div>
+                  <div class="ex-chip">Two Sigma</div>
+                  <div class="ex-chip">AlphaGrep</div>
+                  <div class="ex-chip">Trexquant</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Execution Edge -->
+            <div class="bucket-card card-exec">
+              <div class="card-header">
+                <div class="bucket-num">03· EXECUTION &amp; ORDER ROUTING</div>
+                <div class="bucket-name">Execution Edge</div>
+                <div class="edge-tag">
+                  <div class="edge-bullet">Execution</div>
+                  <div class="edge-bullet">Liquidity</div>
+                  <div class="edge-bullet">Trust</div>
+                </div>
+              </div>
+              <div class="bucket-desc">
+                Help institutions invest &amp; trade better. Execute large
+                orders with minimal market impact.
+              </div>
+              <div class="bucket-features">
+                <div class="feat-item">Smart order splitting (VWAP, TWAP)</div>
+                <div class="feat-item">Lower market impact & slippage</div>
+              </div>
+              <div class="bucket-insight">
+                <div class="insight-tag">AI Impact · High</div>
+                <div class="insight-source">— My Manager @MorganStanley</div>
+                <div class="insight-quote">
+                  Sales is finance-heavy, execution is GCC dev-heavy. AI is
+                  automating both — visible workforce reduction across
+                  already-lean teams.
+                </div>
+              </div>
+              <div class="bucket-examples">
+                <div class="ex-label">Players</div>
+                <div class="ex-names">
+                  <div class="ex-chip">JPMorgan</div>
+                  <div class="ex-chip">Morgan Stanley</div>
+                  <div class="ex-chip">Kotak Securities</div>
+                  <div class="ex-chip">ICICI Securities</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Retail Edge -->
+            <div class="bucket-card card-retail">
+              <div class="card-header">
+                <div class="bucket-num">04· RETAIL PLATFORMS</div>
+                <div class="bucket-name">Access Edge</div>
+                <div class="edge-tag">
+                  <div class="edge-bullet">Access</div>
+                  <div class="edge-bullet">Simplicity</div>
+                  <div class="edge-bullet">Scale</div>
+                </div>
+              </div>
+              <div class="bucket-desc">
+                Democratise retail algo trading. Make systematic strategies
+                accessible to every retail investor.
+              </div>
+              <div class="bucket-features">
+                <div class="feat-item">
+                  No-code / low-code strategy builders via API keys
+                </div>
+                <div class="feat-item">Backtesting & paper trading</div>
+              </div>
+              <div class="bucket-insight">
+                <div class="insight-tag">AI Impact · Existential</div>
+                <div class="insight-source">— Source @Upstox</div>
+                <div class="insight-quote">
+                  If you’re not AI-first or AI-enabled, you don’t stand a
+                  chance. NLP research, incumbents innovating — AI is
+                  table-stakes now.
+                </div>
+              </div>
+              <div class="bucket-examples">
+                <div class="ex-label">Players</div>
+                <div class="ex-names">
+                  <div class="ex-chip">TradingView</div>
+                  <div class="ex-chip">Streak by Zerodha</div>
+                  <div class="ex-chip">Sensibull</div>
+                  <div class="ex-chip">QuantConnect</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="s1-footer">
+            Boundaries are porous — platforms like Zerodha, Quadeye, ICICI
+            Securities and AlphaGrep span multiple buckets simultaneously.
+          </div>
+        </div>
+      </section>
+
+      <!-- ════ SLIDE 2: Retail Investor Journey ════ -->
+      <section data-label="02 Journey">
+        <div class="s2-wrap">
+          <div class="s1-header" style="gap: 4px">
+            <div class="eyebrow">The Indian Retail Investor</div>
+            <div class="s1-title" style="font-size: 44px">
+              From Curiosity to Automation
+            </div>
+          </div>
+
+          <div
+            style="
+              flex: 1;
+              min-height: 0;
+              margin-left: -60px;
+              margin-right: -60px;
+              overflow: hidden;
+            "
+          >
+            <img
+              src="img1.png"
+              alt="Retail Investor Journey &amp; Startup Ecosystem"
+              style="
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                object-position: center;
+                display: block;
+              "
+            />
+          </div>
+
+          <div class="s2-takeaway">
+            <strong>Key insight:</strong> AI is intervening at every stage of
+            the journey — making each step faster, cheaper, and more accessible
+            for the ~80M+ active retail traders in India.
+          </div>
+        </div>
+      </section>
+
+      <!-- ════ SLIDE 3: What are MCPs? ════ -->
+      <section data-label="03 MCPs">
+        <div class="s3d-wrap">
+          <!-- Header -->
+          <div class="s3d-header">
+            <div class="eyebrow">
+              Model Context Protocols: Where they hit hardest!
+            </div>
+            <div style="display: flex; align-items: baseline; gap: 24px">
+              <div class="s1-title" style="font-size: 52px">
+                The Universal Plug for LLMs
+              </div>
+              <div class="s1-subtitle" style="font-size: 26px; margin-top: 0">
+                What MCPs are and should we pay attention? (Source: Krishnam
+                Gupta - TrueFoundry)
+              </div>
+            </div>
+          </div>
+
+          <!-- LEFT: Definition -->
+          <div class="mcp-def-panel">
+            <div class="mcp-def-label" style="font-size: 15px">
+              What is an MCP?
+            </div>
+            <div class="mcp-def-title">
+              A standard language for AI agents to talk to financial tools
+            </div>
+            <div class="mcp-def-body">
+              MCPs let any AI model — LLM or agent — plug into brokers, data
+              feeds, and trading tools
+              <em
+                style="color: var(--text); font-style: normal; font-weight: 600"
+                >without custom code</em
+              >
+              for each integration. One protocol, any tool.
+            </div>
+            <div class="mcp-analogy">
+              "Like USB-C for AI — instead of a different cable for every
+              device, one standard connects everything."
+              <div
+                class="bvp-attribution"
+                style="margin-top: 8px; font-size: 14px"
+              >
+                — Anthropic, inventors of MCP
+              </div>
+            </div>
+            <div class="mcp-pillars">
+              <div class="mcp-pillar">
+                <div class="mcp-pillar-dot"></div>
+                Standardised — one API surface, not N integrations
+              </div>
+              <div class="mcp-pillar">
+                <div class="mcp-pillar-dot"></div>
+                Composable — mix broker + data + news MCPs freely
+              </div>
+              <div class="mcp-pillar">
+                <div class="mcp-pillar-dot"></div>
+                Agent-native — built for LLMs acting autonomously
+              </div>
+            </div>
+          </div>
+
+          <!-- CENTER: Journey Impact -->
+          <div class="journey-impact-panel">
+            <div class="ji-title">
+              MCP Impact Across the Retail Trading Journey
+            </div>
+            <div class="ji-stages">
+              <div class="ji-stage">
+                <div class="ji-num">01</div>
+                <div class="ji-name">Discover &amp; Learn</div>
+                <div class="ji-impact ji-impact-high">
+                  <div class="ji-impact-label">HIGH</div>
+                  <div class="ji-impact-desc">
+                    AI personalises content &amp; democratizes education that
+                    was earlier restriced. Optimizes the "X Task in Y Time for
+                    $Z Cost" equation
+                  </div>
+                </div>
+              </div>
+
+              <div class="ji-stage">
+                <div class="ji-num">02</div>
+                <div class="ji-name">Research &amp; Analyse</div>
+                <div class="ji-impact ji-impact-high">
+                  <div class="ji-impact-label">HIGH</div>
+                  <div class="ji-impact-desc">
+                    AI automates indicator math, screening, web-scraping
+                    sentiment from news and social media assisting in macro
+                    analysis
+                  </div>
+                </div>
+              </div>
+
+              <div class="ji-stage">
+                <div class="ji-num">03</div>
+                <div class="ji-name">Strategise &amp; Build</div>
+                <div class="ji-impact ji-impact-low">
+                  <div class="ji-impact-label">LIMITED</div>
+                  <div class="ji-impact-desc">
+                    Strategy logic needs "Determinism" &amp; "Reliability" — AI
+                    assists, not owns
+                  </div>
+                </div>
+              </div>
+
+              <div class="ji-stage">
+                <div class="ji-num">04</div>
+                <div class="ji-name">Execute &amp; Automate</div>
+                <div class="ji-impact ji-impact-med">
+                  <div class="ji-impact-label">MODERATE</div>
+                  <div class="ji-impact-desc">
+                    LLMs can take commands but lack "Persistence" — not a fully
+                    autonomous trading bot
+                  </div>
+                </div>
+              </div>
+
+              <div class="ji-stage">
+                <div class="ji-num">05</div>
+                <div class="ji-name">Monitor &amp; Manage</div>
+                <div class="ji-impact ji-impact-med">
+                  <div class="ji-impact-label">MODERATE</div>
+                  <div class="ji-impact-desc">
+                    Can help monitor your positions by calculating correlations
+                    but Non-deterministic LLMs can't reliably enforce risk
+                    guardrails — dangerous if profit-maximising
+                  </div>
+                </div>
+              </div>
+
+              <div class="ji-stage">
+                <div class="ji-num">06</div>
+                <div class="ji-name">Review &amp; Improve</div>
+                <div class="ji-impact ji-impact-med" style="flex: 1">
+                  <div class="ji-impact-label">MODERATE</div>
+                  <div class="ji-impact-desc">
+                    AI surfaces patterns &amp; suggests refinements on P&amp;L
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Before / After MCP Mind Map -->
+            <div style="margin-top: auto">
+              <div class="ji-title" style="margin-bottom: 14px">
+                Before vs. After MCP
+              </div>
+              <svg
+                viewBox="0 0 760 240"
+                width="100%"
+                height="240"
+                xmlns="http://www.w3.org/2000/svg"
+                style="display: block"
+              >
+                <defs>
+                  <marker
+                    id="arr"
+                    markerWidth="8"
+                    markerHeight="8"
+                    refX="6"
+                    refY="4"
+                    orient="auto"
+                  >
+                    <polygon points="0 0, 8 4, 0 8" fill="#8596b0" />
+                  </marker>
+                  <marker
+                    id="arr-gold"
+                    markerWidth="8"
+                    markerHeight="8"
+                    refX="6"
+                    refY="4"
+                    orient="auto"
+                  >
+                    <polygon points="0 0, 8 4, 0 8" fill="#9a6e08" />
+                  </marker>
+                </defs>
+
+                <!-- ── BEFORE ── -->
+                <text
+                  x="185"
+                  y="18"
+                  text-anchor="middle"
+                  fill="#566578"
+                  font-size="13"
+                  font-family="DM Mono,monospace"
+                  font-weight="700"
+                  letter-spacing="2"
+                >
+                  BEFORE MCP
+                </text>
+                <!-- Code Editor -->
+                <rect
+                  x="120"
+                  y="26"
+                  width="130"
+                  height="34"
+                  rx="7"
+                  fill="#edf0f7"
+                  stroke="#8596b0"
+                  stroke-width="2"
+                />
+                <text
+                  x="185"
+                  y="48"
+                  text-anchor="middle"
+                  fill="#111827"
+                  font-size="13"
+                  font-weight="700"
+                  font-family="DM Sans,sans-serif"
+                >
+                  Code Editor
+                </text>
+                <!-- APIs -->
+                <rect
+                  x="48"
+                  y="96"
+                  width="68"
+                  height="26"
+                  rx="11"
+                  fill="#e4e8f4"
+                  stroke="#8596b0"
+                  stroke-width="1.2"
+                />
+                <text
+                  x="82"
+                  y="113"
+                  text-anchor="middle"
+                  fill="#566578"
+                  font-size="12"
+                  font-family="DM Mono,monospace"
+                >
+                  API X
+                </text>
+                <rect
+                  x="151"
+                  y="96"
+                  width="68"
+                  height="26"
+                  rx="11"
+                  fill="#e4e8f4"
+                  stroke="#8596b0"
+                  stroke-width="1.2"
+                />
+                <text
+                  x="185"
+                  y="113"
+                  text-anchor="middle"
+                  fill="#566578"
+                  font-size="12"
+                  font-family="DM Mono,monospace"
+                >
+                  API Y
+                </text>
+                <rect
+                  x="254"
+                  y="96"
+                  width="68"
+                  height="26"
+                  rx="11"
+                  fill="#e4e8f4"
+                  stroke="#8596b0"
+                  stroke-width="1.2"
+                />
+                <text
+                  x="288"
+                  y="113"
+                  text-anchor="middle"
+                  fill="#566578"
+                  font-size="12"
+                  font-family="DM Mono,monospace"
+                >
+                  API Z
+                </text>
+                <!-- LLM → APIs -->
+                <line
+                  x1="185"
+                  y1="60"
+                  x2="82"
+                  y2="96"
+                  stroke="#8596b0"
+                  stroke-width="1.8"
+                  marker-end="url(#arr)"
+                />
+                <line
+                  x1="185"
+                  y1="60"
+                  x2="185"
+                  y2="96"
+                  stroke="#8596b0"
+                  stroke-width="1.8"
+                  marker-end="url(#arr)"
+                />
+                <line
+                  x1="185"
+                  y1="60"
+                  x2="288"
+                  y2="96"
+                  stroke="#8596b0"
+                  stroke-width="1.8"
+                  marker-end="url(#arr)"
+                />
+                <!-- Tools -->
+                <rect
+                  x="28"
+                  y="158"
+                  width="108"
+                  height="30"
+                  rx="7"
+                  fill="#e4e8f4"
+                  stroke="#8596b0"
+                  stroke-width="1.2"
+                />
+                <text
+                  x="82"
+                  y="177"
+                  text-anchor="middle"
+                  fill="#566578"
+                  font-size="13"
+                  font-family="DM Sans,sans-serif"
+                >
+                  Market Data
+                </text>
+                <rect
+                  x="152"
+                  y="158"
+                  width="68"
+                  height="30"
+                  rx="7"
+                  fill="#e4e8f4"
+                  stroke="#8596b0"
+                  stroke-width="1.2"
+                />
+                <text
+                  x="186"
+                  y="177"
+                  text-anchor="middle"
+                  fill="#566578"
+                  font-size="13"
+                  font-family="DM Sans,sans-serif"
+                >
+                  Broker
+                </text>
+                <rect
+                  x="234"
+                  y="158"
+                  width="108"
+                  height="30"
+                  rx="7"
+                  fill="#e4e8f4"
+                  stroke="#8596b0"
+                  stroke-width="1.2"
+                />
+                <text
+                  x="288"
+                  y="177"
+                  text-anchor="middle"
+                  fill="#566578"
+                  font-size="13"
+                  font-family="DM Sans,sans-serif"
+                >
+                  News Feed
+                </text>
+                <!-- APIs → Tools -->
+                <line
+                  x1="82"
+                  y1="122"
+                  x2="82"
+                  y2="158"
+                  stroke="#8596b0"
+                  stroke-width="1.8"
+                  marker-end="url(#arr)"
+                />
+                <line
+                  x1="185"
+                  y1="122"
+                  x2="186"
+                  y2="158"
+                  stroke="#8596b0"
+                  stroke-width="1.8"
+                  marker-end="url(#arr)"
+                />
+                <line
+                  x1="288"
+                  y1="122"
+                  x2="288"
+                  y2="158"
+                  stroke="#8596b0"
+                  stroke-width="1.8"
+                  marker-end="url(#arr)"
+                />
+                <!-- Pain -->
+                <text
+                  x="185"
+                  y="222"
+                  text-anchor="middle"
+                  fill="#c03030"
+                  font-size="12"
+                  font-family="DM Sans,sans-serif"
+                >
+                  N custom integrations per tool
+                </text>
+
+                <!-- ── DIVIDER ── -->
+                <line
+                  x1="380"
+                  y1="10"
+                  x2="380"
+                  y2="230"
+                  stroke="#8596b0"
+                  stroke-width="1.5"
+                  stroke-dasharray="5,4"
+                />
+
+                <!-- ── AFTER ── -->
+                <text
+                  x="570"
+                  y="18"
+                  text-anchor="middle"
+                  fill="#9a6e08"
+                  font-size="13"
+                  font-family="DM Mono,monospace"
+                  font-weight="700"
+                  letter-spacing="2"
+                >
+                  AFTER MCP
+                </text>
+                <!-- LLM -->
+                <rect
+                  x="520"
+                  y="26"
+                  width="100"
+                  height="34"
+                  rx="7"
+                  fill="#edf0f7"
+                  stroke="#8596b0"
+                  stroke-width="2"
+                />
+                <text
+                  x="570"
+                  y="48"
+                  text-anchor="middle"
+                  fill="#111827"
+                  font-size="15"
+                  font-weight="700"
+                  font-family="DM Sans,sans-serif"
+                >
+                  LLM
+                </text>
+                <!-- Single API -->
+                <text
+                  x="570"
+                  y="78"
+                  text-anchor="middle"
+                  fill="#566578"
+                  font-size="11"
+                  font-family="DM Mono,monospace"
+                ></text>
+                <!-- MCP -->
+                <rect
+                  x="520"
+                  y="84"
+                  width="100"
+                  height="36"
+                  rx="7"
+                  fill="rgba(155,110,8,0.10)"
+                  stroke="#9a6e08"
+                  stroke-width="2"
+                />
+                <text
+                  x="570"
+                  y="107"
+                  text-anchor="middle"
+                  fill="#9a6e08"
+                  font-size="17"
+                  font-weight="700"
+                  font-family="DM Sans,sans-serif"
+                >
+                  MCP
+                </text>
+                <!-- LLM → MCP -->
+                <line
+                  x1="570"
+                  y1="60"
+                  x2="570"
+                  y2="84"
+                  stroke="#9a6e08"
+                  stroke-width="2"
+                  marker-end="url(#arr-gold)"
+                />
+                <!-- APIs -->
+                <rect
+                  x="458"
+                  y="158"
+                  width="68"
+                  height="26"
+                  rx="11"
+                  fill="#e4e8f4"
+                  stroke="#8596b0"
+                  stroke-width="1.2"
+                />
+                <text
+                  x="492"
+                  y="175"
+                  text-anchor="middle"
+                  fill="#566578"
+                  font-size="12"
+                  font-family="DM Mono,monospace"
+                >
+                  API X
+                </text>
+                <rect
+                  x="536"
+                  y="158"
+                  width="68"
+                  height="26"
+                  rx="11"
+                  fill="#e4e8f4"
+                  stroke="#8596b0"
+                  stroke-width="1.2"
+                />
+                <text
+                  x="570"
+                  y="175"
+                  text-anchor="middle"
+                  fill="#566578"
+                  font-size="12"
+                  font-family="DM Mono,monospace"
+                >
+                  API Y
+                </text>
+                <rect
+                  x="614"
+                  y="158"
+                  width="68"
+                  height="26"
+                  rx="11"
+                  fill="#e4e8f4"
+                  stroke="#8596b0"
+                  stroke-width="1.2"
+                />
+                <text
+                  x="648"
+                  y="175"
+                  text-anchor="middle"
+                  fill="#566578"
+                  font-size="12"
+                  font-family="DM Mono,monospace"
+                >
+                  API Z
+                </text>
+                <!-- MCP → APIs -->
+                <line
+                  x1="570"
+                  y1="120"
+                  x2="492"
+                  y2="158"
+                  stroke="#8596b0"
+                  stroke-width="1.8"
+                  marker-end="url(#arr)"
+                />
+                <line
+                  x1="570"
+                  y1="120"
+                  x2="570"
+                  y2="158"
+                  stroke="#8596b0"
+                  stroke-width="1.8"
+                  marker-end="url(#arr)"
+                />
+                <line
+                  x1="570"
+                  y1="120"
+                  x2="648"
+                  y2="158"
+                  stroke="#8596b0"
+                  stroke-width="1.8"
+                  marker-end="url(#arr)"
+                />
+                <!-- Win -->
+                <text
+                  x="570"
+                  y="222"
+                  text-anchor="middle"
+                  fill="#16804a"
+                  font-size="12"
+                  font-family="DM Sans,sans-serif"
+                >
+                  One standard connects everything
+                </text>
+              </svg>
+            </div>
+          </div>
+
+          <!-- RIGHT: Quotes -->
+          <div class="bvp-panel">
+            <div class="bvp-source">BVP · State of AI 2025</div>
+            <div class="bvp-quote-text">
+              We're still in a moment of wild unpredictability. Implications of
+              developments in <em>Model Context Protocol (MCP)</em> — areas
+              we'll label <em>"dark matter"</em> — still have us scratching our
+              heads.
+            </div>
+            <div class="bvp-attribution">— Bessemer Venture Partners, 2025</div>
+
+            <div style="border-top: 1px solid var(--border)"></div>
+
+            <div class="bvp-source">Kailash Nadh · CTO, Zerodha</div>
+            <div class="bvp-quote-text">
+              AI systems can now do the reverse —
+              <em
+                >auto-integrate systems into themselves and start calling
+                real-world shots</em
+              >, at the same time significantly diminishing the visibility into
+              the 'how' and 'why' of tangible cross-service actions.
+            </div>
+            <div class="bvp-attribution">
+              — nadh.in/blog/mcp-seems-viral, May 2025
+            </div>
+
+            <div class="bvp-insight">
+              <strong>Why it matters:</strong> When top-tier VCs and industry
+              leaders call MCP "dark matter" — it signals a structural shift
+              that hasn't been fully priced into the market yet.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════ SLIDE 4: MCP Opportunity ════ -->
+      <section data-label="04 MCP">
+        <div class="s3-wrap">
+          <div class="s1-header">
+            <div class="eyebrow">HOW INDIA IS REACTING!</div>
+            <div class="s1-title">Powering the Retail Trader in India</div>
+            <div class="s1-subtitle">
+              Two paths to enable smarter, AI-enabled/native trading experiences
+            </div>
+          </div>
+
+          <div class="s3-cols" style="flex: 1; min-height: 0">
+            <!-- Path 1: MCP -->
+            <div class="s3-path path-1" style="min-height: 0; overflow: hidden">
+              <div class="path-label">Path 01</div>
+              <div class="path-title">Broker + MCP Infrastructure</div>
+              <div class="path-desc">
+                Standardised protocols that let LLMs and AI agents connect to
+                broker execution rails, market data, and news — turning natural
+                language into live trades.
+              </div>
+
+              <div style="display: flex; gap: 16px; flex: 1">
+                <!-- Brokers -->
+                <div
+                  style="
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                    flex: 1;
+                  "
+                >
+                  <div
+                    style="
+                      font-size: 24px;
+                      font-weight: 600;
+                      letter-spacing: 0.12em;
+                      text-transform: uppercase;
+                      color: var(--muted);
+                      font-family: var(--mono);
+                    "
+                  >
+                    Execution Rails
+                  </div>
+                  <div class="broker-chips">
+                    <div class="broker-chip">Zerodha</div>
+                    <div class="broker-chip">Upstox</div>
+                    <div class="broker-chip">Dhan</div>
+                    <div class="broker-chip">Angel One</div>
+                    <div class="broker-chip">5paisa</div>
+                  </div>
+                </div>
+
+                <!-- MCPs -->
+                <div
+                  style="
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                    flex: 1.4;
+                  "
+                >
+                  <div
+                    style="
+                      font-size: 24px;
+                      font-weight: 600;
+                      letter-spacing: 0.12em;
+                      text-transform: uppercase;
+                      color: var(--muted);
+                      font-family: var(--mono);
+                    "
+                  >
+                    MCP Layer
+                  </div>
+                  <div class="mcp-stack">
+                    <div class="mcp-layer">
+                      <div class="mcp-icon mcp-icon-blue">📊</div>
+                      <div class="mcp-content">
+                        <div class="mcp-name">Market Data MCP</div>
+                        <div class="mcp-detail">
+                          Real-time prices, OHLCV, order book
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mcp-layer">
+                      <div class="mcp-icon mcp-icon-gold">📰</div>
+                      <div class="mcp-content">
+                        <div class="mcp-name">News & Sentiment MCP</div>
+                        <div class="mcp-detail">
+                          Curated signals, macro context, NLP scoring
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mcp-layer">
+                      <div class="mcp-icon mcp-icon-green">🔗</div>
+                      <div class="mcp-content">
+                        <div class="mcp-name">Broker MCP</div>
+                        <div class="mcp-detail">
+                          Place orders, manage positions via LLM agent
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                style="
+                  background: rgba(74, 143, 232, 0.07);
+                  border: 1px solid rgba(74, 143, 232, 0.2);
+                  border-radius: 8px;
+                  padding: 14px 20px;
+                  font-size: 24px;
+                  color: #1a50a8;
+                  line-height: 1.4;
+                "
+              >
+                <strong style="color: var(--blue-light)">Value:</strong> One
+                standardised API surface. Any LLM app connects to any broker —
+                without custom integrations.
+              </div>
+            </div>
+
+            <!-- Divider -->
+            <div class="s3-divider">
+              <div class="s3-divider-line"></div>
+              <div class="or-badge">OR</div>
+              <div class="s3-divider-line"></div>
+            </div>
+
+            <!-- Path 2: Platforms -->
+            <div class="s3-path path-2" style="min-height: 0; overflow: hidden">
+              <div class="path-label">Path 02</div>
+              <div class="path-title">Retail Algo Ecosystem</div>
+              <div class="path-desc">
+                Purpose-built platforms that abstract complexity away — no-code
+                builders, deep backtesting, and multi-broker deployment in one
+                product.
+              </div>
+
+              <div class="platform-trio">
+                <div class="trio-card">
+                  <div>
+                    <div class="trio-name">Streak</div>
+                    <div
+                      style="
+                        font-size: 24px;
+                        color: var(--muted);
+                        margin-top: 2px;
+                      "
+                    >
+                      by Zerodha
+                    </div>
+                  </div>
+                  <div class="trio-tag">Zero-Code Builder</div>
+                  <div class="trio-props">
+                    <div class="trio-prop">Visual strategy builder</div>
+                    <div class="trio-prop">Backtest with tick data</div>
+                    <div class="trio-prop">Auto-execute on Zerodha</div>
+                  </div>
+                  <div class="trio-vp">
+                    Make algo trading visual & accessible
+                  </div>
+                </div>
+
+                <div class="trio-card">
+                  <div>
+                    <div class="trio-name">AlgoTest</div>
+                  </div>
+                  <div class="trio-tag">Options Powerhouse</div>
+                  <div class="trio-props">
+                    <div class="trio-prop">High-quality options data</div>
+                    <div class="trio-prop">Multi-year, multi-asset testing</div>
+                    <div class="trio-prop">Realistic execution analytics</div>
+                  </div>
+                  <div class="trio-vp">Test with confidence, depth & speed</div>
+                </div>
+
+                <div class="trio-card">
+                  <div>
+                    <div class="trio-name">Tradetron</div>
+                  </div>
+                  <div class="trio-tag">Strategy Marketplace</div>
+                  <div class="trio-props">
+                    <div class="trio-prop">
+                      Marketplace of strategies & creators
+                    </div>
+                    <div class="trio-prop">
+                      Deploy on 80+ brokers seamlessly
+                    </div>
+                    <div class="trio-prop">Robust state management engine</div>
+                  </div>
+                  <div class="trio-vp">
+                    Discover, deploy & automate at scale
+                  </div>
+                </div>
+              </div>
+
+              <div
+                style="
+                  background: rgba(61, 170, 110, 0.07);
+                  border: 1px solid rgba(61, 170, 110, 0.2);
+                  border-radius: 8px;
+                  padding: 10px 16px;
+                  font-size: 24px;
+                  color: #16804a;
+                  line-height: 1.3;
+                "
+              >
+                <strong style="color: var(--green-light)">Value:</strong>
+                Full-stack vertical integration — from strategy creation to live
+                execution, within a single product loop.
+              </div>
+            </div>
+          </div>
+
+          <!-- footer removed to fix overflow -->
+        </div>
+      </section>
+    </deck-stage>
+
+    <script type="application/json" id="speaker-notes">
+      [
+        "This slide maps the four ways players compete in algo trading. The key insight for a VC lens is that the edge you hold determines your moat — speed, data, execution quality, or distribution. Indian players like Graviton and AlphaGrep are already world-class in their lanes. The bottom note is critical: the most interesting companies span multiple buckets, which is where compounding advantages emerge.",
+        "This is the retail investor's journey — six stages, from first learning about markets to continuously improving automated strategies. What's striking is that AI is now touching every single stage. The incumbent platforms — Groww, Zerodha, Upstox — are all racing to own multiple steps. The question for investors is: who owns the full loop, and who becomes a feature inside someone else's product?",
+        "This slide frames the two structural bets in enabling retail algo trading in India. Path one is infrastructure — MCPs as a standardisation layer that lets any LLM app plug into any broker. Path two is vertical integration — platforms like Streak, AlgoTest, and Tradetron that own the full stack. These aren't mutually exclusive; an MCP layer could power the execution rails beneath a no-code platform. The white space is in composability."
+      ]
+    </script>
+  </body>
+</html>
